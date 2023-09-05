@@ -1,10 +1,28 @@
-## Environment
-1. node v18.16.0
+# Frontend Udemy SKA 
+
+## Development
+### Environment
+- Node.js v18.16.0
+### Setup
+Clone this repo to your local machine and install the dependencies.
+
+```bash
+#using npm
+npm install
+npm run dev
+```
+```bash
+#using pnpm
+pnpm install
+pnpm dev
+```
+
+
 ## Requirement
 1. if user not authenticated, should redirect to verification page
 2. if user authenticated, should redirect to profile page
 
-## verification page
+## Verification Page
 1. should have 4 digit inputs
 2. should focus on first input when page loaded
 3. should focus on next input when user enter a digit
@@ -17,7 +35,7 @@
 10. input should be numeric only
 11. each input should be 1 numeric only
 
-## profile page
+## Profile Page
 1. should show username, quote , user photo and logout button
 2. should remove token and redirect to verification page when user click logout button
 3. should not log out user when user refresh page
