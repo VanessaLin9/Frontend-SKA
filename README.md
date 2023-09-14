@@ -23,22 +23,22 @@ pnpm dev
 2. if user authenticated, should redirect to profile page
 
 ## Verification Page
-1. should have 4 digit inputs
-2. should focus on first input when page loaded
-3. should focus on next input when user enter a digit
-4. should focus on previous input when user press backspace
-5. should auto submit when user enter 4 digits
-6. should show error message when user enter wrong code
-7. should show loading when user submit code
-8. should redirect to profile page when user submit correct code
-9. able to paste code from clipboard
-10. input should be numeric only
-11. each input should be 1 numeric only
+-[ ] should have 4 digit inputs
+-[ ] should focus on first input when page loaded
+-[ ] should focus on next input when user enter a digit 
+-[ ] should focus on previous input when user press backspace
+-[ ] should auto submit when user enter 4 digits
+-[ ] should show error message when user enter wrong code
+-[ ] should show loading when user submit code
+-[ ] should redirect to profile page when user submit correct code
+-[ ] able to paste code from clipboard
+-[ ] input should be numeric only
+-[ ] each input should be 1 numeric only
 
 ## Profile Page
-1. should show username, quote , user photo and logout button
-2. should remove token and redirect to verification page when user click logout button
-3. should not log out user when user refresh page
+-[ ] should show username, quote , user photo and logout button
+-[ ] should remove token and redirect to verification page when user click logout button
+-[ ] should not log out user when user refresh page
 
 ## Mock API Documentation
 
