@@ -7,7 +7,8 @@
   const input1 = ref('');
   const input2 = ref('');
   const input3 = ref('');
-  const password = new Array() 
+  const password = new Array(4); 
+  let nowIndex = 0;
  // auto focus on first input
   onMounted(() => {
     if(firstInput.value){
@@ -20,7 +21,8 @@
     // const value = event.key;
     if(!isNumber(keyCode) && keyCode!==8) {
       event.preventDefault();
-    } 
+    }
+    //password.push()
   };
   //need handle chinese input
   const isNumber = (key:number) => {
@@ -28,7 +30,7 @@
     // return regex.test(key); 
     return key >= 48 && key <= 57;
   };
-  const handleInput = (event: any) => {
+  const handleFocus = (event: any) => {
     const input = event.target;
     const keyCode = event.keyCode;
     const nextInput = input.nextElementSibling;
@@ -36,9 +38,15 @@
     if(keyCode === 8) {
       if(input.value.length === 0) {
         if(previousInput === null) return;
+        nowIndex - 1 < 0 ? nowIndex = 0 : nowIndex --;
+        console.log(nowIndex);
+        password.pop();
         previousInput.focus();
       }
     } else if (input.value.length === 1) {
+      nowIndex +1 > 3 ? nowIndex = 3 : nowIndex ++;
+      password.push(input.value);
+      console.log(nowIndex)
       if(nextInput === null) return;
       nextInput.focus();
     }
@@ -59,43 +67,47 @@
           <input class="input"
                  v-model="input0"
                  ref="firstInput"
+                 type="password"
                  min="0"
                  max="9"
                  maxlength="1"
                  pattern="[0-9]"
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
+                 @keyup="handleFocus($event)"
                  >
           <input class="input" 
                  v-model="input1"
+                 type="password"
                  min="0"
                  max="9"
                  maxlength="1"
                  pattern="[0-9]"
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
+                 @keyup="handleFocus($event)"
                   >
           <input class="input" 
                  v-model="input2"
+                 type="password"
                  min="0"
                  max="9"
                  maxlength="1"
                  pattern="[0-9]"
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
+                 @keyup="handleFocus($event)"
                   >
           <input class="input" 
                  v-model="input3"
+                 type="password"
                  min="0"
                  max="9"
                  maxlength="1"
                  pattern="[0-9]"
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
+                 @keyup="handleFocus($event)"
                   >
           
         </div>
