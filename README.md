@@ -31,7 +31,7 @@ pnpm dev
 - [ ] should show error message when user enter wrong code
 - [ ] should show loading when user submit code
 - [ ] should redirect to profile page when user submit correct code
-- [ ] able to paste code from clipboard
+- [x] able to paste code from clipboard
 - [ ] input should be numeric only
 - [x] each input should be 1 numeric only
 

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import {ref, onMounted, Ref} from 'vue';
-  import {$ref} from "vue/macros";
 
-  
-  const input0:Ref<HTMLElement | null> = ref(null);
-  const input1:Ref<HTMLElement | null> = ref(null);
-  const input2:Ref<HTMLElement | null> = ref(null);
-  const input3:Ref<HTMLElement | null> = ref(null);
-  const password = ref(['', '', '', '']);
+
+const input0:Ref<HTMLElement | null> = ref(null);
+const input1: Ref<HTMLElement | null> = ref(null);
+const input2: Ref<HTMLElement | null> = ref(null);
+const input3: Ref<HTMLElement | null> = ref(null);
+const password = ref(['', '', '', '']);
+
  // auto focus on first input
   onMounted(() => {
     if(input0.value){
@@ -49,6 +49,16 @@ import {ref, onMounted, Ref} from 'vue';
     }
   };
   
+  const handleOnPaste = (event: any) => {
+    event.preventDefault();
+    const paste = event.clipboardData.getData('text');
+    const pasteArray = paste.split('');
+    password.value = pasteArray;
+    if(input0.value){
+      input0.value.focus();
+    }
+  };
+  
 </script>
 
 <template>
@@ -66,6 +76,7 @@ import {ref, onMounted, Ref} from 'vue';
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
                  @keyup="handleInput($event)"
+                 @paste="handleOnPaste($event)"
                  >
           <input class="input" 
                  v-model="password[1]"
@@ -77,6 +88,7 @@ import {ref, onMounted, Ref} from 'vue';
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
                  @keyup="handleInput($event)"
+                 @paste="handleOnPaste($event)"
                   >
           <input class="input" 
                  v-model="password[2]"
@@ -88,6 +100,7 @@ import {ref, onMounted, Ref} from 'vue';
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
                  @keyup="handleInput($event)"
+                 @paste="handleOnPaste($event)"
                   >
           <input class="input" 
                  v-model="password[3]"
@@ -99,6 +112,7 @@ import {ref, onMounted, Ref} from 'vue';
                  @input="handleOnchange($event)" 
                  @keydown="handleOnValidate($event)"
                  @keyup="handleInput($event)"
+                 @paste="handleOnPaste($event)"
                   >
           
         </div>
