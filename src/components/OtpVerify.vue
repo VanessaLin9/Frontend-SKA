@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import {ref, onMounted, Ref} from 'vue';
 
-const emit = defineEmits(['post-loading', 'finish-loading']);
+const emit = defineEmits(['post-loading', 'finish-loading', 'getToken']);
+const errorMessage = ref('');
+const password = ref(['', '', '', '']);
 
 const input0: Ref<HTMLElement | null> = ref(null);
 const input1: Ref<HTMLElement | null> = ref(null);
 const input2: Ref<HTMLElement | null> = ref(null);
 const input3: Ref<HTMLElement | null> = ref(null);
-const password = ref(['', '', '', '']);
 
  // auto focus on first input
   onMounted(() => {
@@ -39,9 +40,14 @@ const password = ref(['', '', '', '']);
     });
     const data = await response.json();
     console.log(data.valid);
+    if(data.valid && data.token){
+      emit('getToken', data.token);
+    } else {
+      throw new Error('Error: post password failed');
+    }
    } catch (error) {
     console.error(error)
-    throw new Error('Error: post password failed');
+    handleErrorMessage(error.message);
    } finally {
     emit('finish-loading');
     password.value = ['', '', '', ''];
@@ -83,6 +89,13 @@ const handleInput = (event: any) => {
       input0.value.focus();
     }
   };
+  
+const handleErrorMessage = (message: string) => {
+  errorMessage.value = message;
+  setTimeout(() => {
+    errorMessage.value = '';
+  }, 3000);
+} 
   
 </script>
 
@@ -142,6 +155,7 @@ const handleInput = (event: any) => {
           
         </div>
       </div>
+      <span class="error__message">{{errorMessage}}</span>
     </form>
 </template>
 <style scoped>
@@ -167,5 +181,13 @@ const handleInput = (event: any) => {
   height: 12rem;
   text-align: center;
   font-size: 2rem;
+}
+.error__message {
+  display: block;
+  width: 100%;
+  color: tomato;
+  text-align: center;
+  font-weight: bolder;
+  margin-top: 2rem;
 }
 </style>
