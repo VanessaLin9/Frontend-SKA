@@ -27,12 +27,12 @@ pnpm dev
 - [x] should focus on first input when page loaded
 - [x] should focus on next input when user enter a digit 
 - [x] should focus on previous input when user press backspace
-- [ ] should auto submit when user enter 4 digits
+- [x] should auto submit when user enter 4 digits
 - [ ] should show error message when user enter wrong code
 - [ ] should show loading when user submit code
 - [ ] should redirect to profile page when user submit correct code
 - [x] able to paste code from clipboard
-- [ ] input should be numeric only
+- [x] input should be numeric only
 - [x] each input should be 1 numeric only
 
 ## Profile Page

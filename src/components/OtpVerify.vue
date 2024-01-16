@@ -28,7 +28,24 @@ const password = ref(['', '', '', '']);
     // return regex.test(key); 
     return key >= 48 && key <= 57;
   };
-  const handleInput = (event: any) => {
+
+ const postPassword = async () => {
+   const code = password.value.join('');
+  try {
+    const response = await fetch('/api/verify', {
+      method: 'POST',
+      body: JSON.stringify({code}),
+    });
+    const data = await response.json();
+    console.log(data.valid);
+    return;
+  } catch (error) {
+    console.error(error)
+    throw new Error('Error: post password failed');
+  }
+}
+
+const handleInput = (event: any) => {
     const input = event.target;
     const keyCode = event.keyCode;
     const nextInput = input.nextElementSibling;
@@ -39,8 +56,11 @@ const password = ref(['', '', '', '']);
         previousInput.focus();
       }
     } else if (input.value.length === 1) {
-      if(nextInput === null) return;
-      nextInput.focus();
+      if(nextInput === null){
+        postPassword();
+      } else {
+       nextInput.focus();
+      } 
     }
   };
   const handleOnchange = (event: any) => {
