@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
+import {ref, onMounted, Ref} from 'vue';
   import {$ref} from "vue/macros";
 
-  const firstInput = ref();
-  const input0 = ref('');
-  const input1 = ref('');
-  const input2 = ref('');
-  const input3 = ref('');
-  const password = new Array() 
+  
+  const input0:Ref<HTMLElement | null> = ref(null);
+  const input1:Ref<HTMLElement | null> = ref(null);
+  const input2:Ref<HTMLElement | null> = ref(null);
+  const input3:Ref<HTMLElement | null> = ref(null);
+  const password = ref(['', '', '', '']);
  // auto focus on first input
   onMounted(() => {
-    if(firstInput.value){
-      firstInput.value.focus();
+    if(input0.value){
+      input0.value.focus();
     }
   }); 
   
@@ -57,8 +57,8 @@
         <h3 class="otp-title">Enter verification</h3>
         <div class="input-group">
           <input class="input"
-                 v-model="input0"
-                 ref="firstInput"
+                 v-model="password[0]"
+                 ref="input0"
                  min="0"
                  max="9"
                  maxlength="1"
@@ -68,7 +68,8 @@
                  @keyup="handleInput($event)"
                  >
           <input class="input" 
-                 v-model="input1"
+                 v-model="password[1]"
+                 ref="input1"
                  min="0"
                  max="9"
                  maxlength="1"
@@ -78,7 +79,8 @@
                  @keyup="handleInput($event)"
                   >
           <input class="input" 
-                 v-model="input2"
+                 v-model="password[2]"
+                 ref="input2"
                  min="0"
                  max="9"
                  maxlength="1"
@@ -88,7 +90,8 @@
                  @keyup="handleInput($event)"
                   >
           <input class="input" 
-                 v-model="input3"
+                 v-model="password[3]"
+                 ref="input3"
                  min="0"
                  max="9"
                  maxlength="1"
