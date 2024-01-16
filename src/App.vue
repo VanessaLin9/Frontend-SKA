@@ -5,10 +5,16 @@ import Loading from '@/components/Loading.vue'
 import { ref } from 'vue'
 
 const isLoading = ref(false)
+
+const handleLoading = () => {
+  isLoading.value = !isLoading.value
+}
 </script>
 
 <template>
   <Loading v-if="isLoading"/>
   <Profile/>
-  <OtpVerify/>
+  <OtpVerify
+  @post-loading="handleLoading()"
+  @finish-loading="handleLoading()"/>
 </template>

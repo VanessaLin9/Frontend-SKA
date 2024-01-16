@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {ref, onMounted, Ref} from 'vue';
 
+const emit = defineEmits(['post-loading', 'finish-loading']);
 
 const input0:Ref<HTMLElement | null> = ref(null);
 const input1: Ref<HTMLElement | null> = ref(null);
@@ -38,6 +39,15 @@ const password = ref(['', '', '', '']);
     });
     const data = await response.json();
     console.log(data.valid);
+    if(data.valid){
+      emit('finish-loading');
+      //alert('success');
+    } else {
+      emit('finish-loading');
+      password.value = ['', '', '', ''];
+      input0.value?.focus();
+      //alert('fail');
+    }
     return;
   } catch (error) {
     console.error(error)
@@ -58,6 +68,7 @@ const handleInput = (event: any) => {
     } else if (input.value.length === 1) {
       if(nextInput === null){
         postPassword();
+        emit('post-loading');
       } else {
        nextInput.focus();
       } 
