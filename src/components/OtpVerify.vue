@@ -46,7 +46,6 @@ const input3: Ref<HTMLElement | null> = ref(null);
       throw new Error('Error: post password failed');
     }
    } catch (error) {
-    console.error(error)
     handleErrorMessage(error.message);
    } finally {
     emit('finish-loading');
@@ -185,6 +184,7 @@ const handleErrorMessage = (message: string) => {
 .error__message {
   display: block;
   width: 100%;
+  height: 2rem;
   color: tomato;
   text-align: center;
   font-weight: bolder;
