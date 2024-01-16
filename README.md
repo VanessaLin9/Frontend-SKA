@@ -29,7 +29,7 @@ pnpm dev
 - [x] should focus on previous input when user press backspace
 - [x] should auto submit when user enter 4 digits
 - [ ] should show error message when user enter wrong code
-- [ ] should show loading when user submit code
+- [x] should show loading when user submit code
 - [ ] should redirect to profile page when user submit correct code
 - [x] able to paste code from clipboard
 - [x] input should be numeric only

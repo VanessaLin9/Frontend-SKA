@@ -3,7 +3,7 @@ import {ref, onMounted, Ref} from 'vue';
 
 const emit = defineEmits(['post-loading', 'finish-loading']);
 
-const input0:Ref<HTMLElement | null> = ref(null);
+const input0: Ref<HTMLElement | null> = ref(null);
 const input1: Ref<HTMLElement | null> = ref(null);
 const input2: Ref<HTMLElement | null> = ref(null);
 const input3: Ref<HTMLElement | null> = ref(null);
@@ -32,28 +32,22 @@ const password = ref(['', '', '', '']);
 
  const postPassword = async () => {
    const code = password.value.join('');
-  try {
+   try {
     const response = await fetch('/api/verify', {
       method: 'POST',
       body: JSON.stringify({code}),
     });
     const data = await response.json();
     console.log(data.valid);
-    if(data.valid){
-      emit('finish-loading');
-      //alert('success');
-    } else {
-      emit('finish-loading');
-      password.value = ['', '', '', ''];
-      input0.value?.focus();
-      //alert('fail');
-    }
-    return;
-  } catch (error) {
+   } catch (error) {
     console.error(error)
     throw new Error('Error: post password failed');
-  }
-}
+   } finally {
+    emit('finish-loading');
+    password.value = ['', '', '', ''];
+    input0.value?.focus();
+   }
+ }
 
 const handleInput = (event: any) => {
     const input = event.target;
