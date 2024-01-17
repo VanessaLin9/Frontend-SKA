@@ -22,6 +22,11 @@ const props = defineProps({
       </figcaption>
     </div>
   </figure>
+  <div class="logoutBtn">
+    <button
+      @click="$emit('logout')"
+    >logout</button>
+  </div>
 </template>
 
 <style scoped>
@@ -63,6 +68,22 @@ const props = defineProps({
 .text-sky-500 {
   --un-text-opacity: 1;
   color: rgba(14, 165, 233, var(--un-text-opacity));
+}
+
+.logoutBtn {
+  display: flex;
+  justify-content: end;
+  padding-right: 3rem;
+  button {
+    background-color: #333;
+    color: rgba(14, 165, 233, 0.5);
+    border: none;
+    &:hover {
+      background-color: rgba(14, 165, 233, 0.8);
+      color: #eee;
+    }
+  }
+ 
 }
 
 </style>

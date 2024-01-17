@@ -44,6 +44,13 @@ const handleToken = (value: string) => {
   token.value = value; 
   authorization()
 }
+
+const handleLogout = () => {
+  token.value = '';
+  user.username = '';
+  user.quote = '';
+  user.photo = '';
+}
 </script>
 
 <template>
@@ -52,6 +59,7 @@ const handleToken = (value: string) => {
            :username ="user.username"
            :quote="user.quote"
            :photo="user.photo"
+           @logout="handleLogout"
   />
   <OtpVerify v-else
   @post-loading="handleLoading()"
