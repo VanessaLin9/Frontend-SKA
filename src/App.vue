@@ -2,7 +2,7 @@
 import OtpVerify from '@/components/OtpVerify.vue'
 import Profile from '@/components/Profile.vue'
 import Loading from '@/components/Loading.vue'
-import {computed, reactive, ref} from 'vue'
+import {computed, onMounted, reactive, ref} from 'vue'
 
 const isLoading = ref(false);
 const token = ref('');
@@ -41,7 +41,8 @@ const authorization = async () => {
 };
 
 const handleToken = (value: string) => {
-  token.value = value; 
+  token.value = value;
+  localStorage.setItem('token', token.value);
   authorization()
 }
 
@@ -50,7 +51,16 @@ const handleLogout = () => {
   user.username = '';
   user.quote = '';
   user.photo = '';
+  localStorage.removeItem('token');
 }
+
+onMounted(() => {
+  const localToken = localStorage.getItem('token');
+  if(localToken){
+    handleToken(localToken);
+    authorization();
+  }
+})
 </script>
 
 <template>
