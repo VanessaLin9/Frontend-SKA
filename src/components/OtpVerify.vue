@@ -45,7 +45,7 @@ const input3 = ref<HTMLElement | null>(null);
     } else {
       throw new Error('Error: post password failed');
     }
-   } catch (error) {
+   } catch (error: any) {
     handleErrorMessage(error.message);
    } finally {
     emit('finish-loading');
