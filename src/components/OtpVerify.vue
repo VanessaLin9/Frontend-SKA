@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import {ref, onMounted, Ref} from 'vue';
+import {ref, onMounted} from 'vue';
 
 const emit = defineEmits(['post-loading', 'finish-loading', 'getToken']);
 const errorMessage = ref('');
 const password = ref(['', '', '', '']);
 
-const input0: Ref<HTMLElement | null> = ref(null);
-const input1: Ref<HTMLElement | null> = ref(null);
-const input2: Ref<HTMLElement | null> = ref(null);
-const input3: Ref<HTMLElement | null> = ref(null);
+const input0 = ref<HTMLElement | null>(null);
+const input1 = ref<HTMLElement | null>(null);
+const input2 = ref<HTMLElement | null>(null);
+const input3 = ref<HTMLElement | null>(null);
 
  // auto focus on first input
   onMounted(() => {
