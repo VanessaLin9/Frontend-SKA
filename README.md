@@ -30,7 +30,7 @@ pnpm dev
 - [x] should auto submit when user enter 4 digits
 - [x] should show error message when user enter wrong code
 - [x] should show loading when user submit code
-- [ ] should redirect to profile page when user submit correct code
+- [x] should redirect to profile page when user submit correct code
 - [x] able to paste code from clipboard
 - [x] input should be numeric only
 - [x] each input should be 1 numeric only

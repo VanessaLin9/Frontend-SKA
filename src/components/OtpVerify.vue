@@ -39,7 +39,6 @@ const input3 = ref<HTMLElement | null>(null);
       body: JSON.stringify({code}),
     });
     const data = await response.json();
-    console.log(data.valid);
     if(data.valid && data.token){
       emit('getToken', data.token);
     } else {
