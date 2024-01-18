@@ -4,7 +4,7 @@ import {ref, onMounted, reactive} from 'vue';
 const emit = defineEmits(['post-loading', 'finish-loading', 'getToken']);
 const errorMessage = ref('');
 const inputs = ref<HTMLElement[]>([]);
-const password:number[] = reactive([
+const password:(number|null)[] = reactive([
   null,
   null,
   null,
@@ -29,7 +29,7 @@ const handleFocusByIndex = (index: number) => {
     return !isNaN(value);
   };
 
-const handleInput = ({event, index}) => {
+const handleInput = ({event, index}: {event: KeyboardEvent, index: number}) => {
     const input = parseInt(event.key);
     
     if(event.key === 'Backspace') {
@@ -43,7 +43,8 @@ const handleInput = ({event, index}) => {
           handleFocusByIndex(index + 1);
         } 
     }
-  };
+};
+
 const handleOnPaste = (event: any) => {
     event.preventDefault();
     const inputsLength = inputs.value.length;
