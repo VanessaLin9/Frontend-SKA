@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const emit = defineEmits(['logout']);
 const props = defineProps({
   username: String,
   quote: String,
@@ -24,7 +25,7 @@ const props = defineProps({
   </figure>
   <div class="logoutBtn">
     <button
-      @click="$emit('logout')"
+      @click="emit('logout')"
     >logout</button>
   </div>
 </template>

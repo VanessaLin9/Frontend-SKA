@@ -1,38 +1,75 @@
 <script lang="ts" setup>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, reactive} from 'vue';
 
 const emit = defineEmits(['post-loading', 'finish-loading', 'getToken']);
 const errorMessage = ref('');
-const password = ref(['', '', '', '']);
+const inputs = ref<HTMLElement[]>([]);
+const password:number[] = reactive([
+  null,
+  null,
+  null,
+  null
+]);
 
-const input0 = ref<HTMLElement | null>(null);
-const input1 = ref<HTMLElement | null>(null);
-const input2 = ref<HTMLElement | null>(null);
-const input3 = ref<HTMLElement | null>(null);
-
- // auto focus on first input
-  onMounted(() => {
-    if(input0.value){
-      input0.value.focus();
+const handleFocusByIndex = (index: number) => {
+    if(index < 0 || index >= inputs.value.length) {
+      return;
     }
-  }); 
-  
-  const handleOnValidate = (event: any) => {
-    const keyCode = event.keyCode;
+    inputs.value[index].focus();
+  };  
+  const handleOnValidate = (event: KeyboardEvent) => {
     // const value = event.key;
-    if(!isNumber(keyCode) && keyCode!==8) {
+    if(!isNumber(event)) {
       event.preventDefault();
-    } 
+    }
   };
   //need handle chinese input
-  const isNumber = (key:number) => {
-    // const regex = new RegExp('^[0-9]$');
-    // return regex.test(key); 
-    return key >= 48 && key <= 57;
+  const isNumber = (event: KeyboardEvent) => {
+    const value = parseInt(event.key)
+    return !isNaN(value);
   };
 
+const handleInput = ({event, index}) => {
+    const input = parseInt(event.key);
+    
+    if(event.key === 'Backspace') {
+      password[index] = input;
+      handleFocusByIndex(index - 1);
+    } else if (isNumber(event)) {
+        password[index] = input;
+        if(index === inputs.value.length - 1 && !isNaN(input)){
+          postPassword();
+        } else {
+          handleFocusByIndex(index + 1);
+        } 
+    }
+  };
+const handleOnPaste = (event: any) => {
+    event.preventDefault();
+    const inputsLength = inputs.value.length;
+    const paste = event.clipboardData.getData('text');
+    const pasteArray = paste.split('').map(Number);
+    if(pasteArray.length !== inputsLength) {
+      pasteArray.slice(0, inputsLength)
+    }
+    for(let i = 0; i < pasteArray.length; i++) {
+      password[i] = pasteArray[i];
+    }
+    if(pasteArray.length === inputsLength) {
+      postPassword();
+    }
+    handleFocusByIndex(pasteArray.length - 1);
+  };
+  
+const handleErrorMessage = (message: string) => {
+  errorMessage.value = message;
+  setTimeout(() => {
+    errorMessage.value = '';
+  }, 3000);
+} 
  const postPassword = async () => {
-   const code = password.value.join('');
+   const code = password.join('');
+   emit('post-loading');
    try {
     const response = await fetch('/api/verify', {
       method: 'POST',
@@ -48,52 +85,16 @@ const input3 = ref<HTMLElement | null>(null);
     handleErrorMessage(error.message);
    } finally {
     emit('finish-loading');
-    password.value = ['', '', '', ''];
-    input0.value?.focus();
+    for(let i = 0; i < inputs.value.length; i++) {
+      password[i] = null;
+    }
+    handleFocusByIndex(0)
    }
  }
-
-const handleInput = (event: any) => {
-    const input = event.target;
-    const keyCode = event.keyCode;
-    const nextInput = input.nextElementSibling;
-    const previousInput = input.previousElementSibling;
-    if(keyCode === 8) {
-      if(input.value.length === 0) {
-        if(previousInput === null) return;
-        previousInput.focus();
-      }
-    } else if (input.value.length === 1) {
-      if(nextInput === null){
-        postPassword();
-        emit('post-loading');
-      } else {
-       nextInput.focus();
-      } 
-    }
-  };
-  const handleOnchange = (event: any) => {
-    if(event.target.value.length > 1) {
-      event.target.value = event.target.value.slice(-1);
-    }
-  };
-  
-  const handleOnPaste = (event: any) => {
-    event.preventDefault();
-    const paste = event.clipboardData.getData('text');
-    const pasteArray = paste.split('');
-    password.value = pasteArray;
-    if(input0.value){
-      input0.value.focus();
-    }
-  };
-  
-const handleErrorMessage = (message: string) => {
-  errorMessage.value = message;
-  setTimeout(() => {
-    errorMessage.value = '';
-  }, 3000);
-} 
+onMounted(() => {
+ // auto focus on first input
+    handleFocusByIndex(0)
+}); 
   
 </script>
 
@@ -102,55 +103,20 @@ const handleErrorMessage = (message: string) => {
       <div class="otp-container">
         <h3 class="otp-title">Enter verification</h3>
         <div class="input-group">
-          <input class="input"
-                 v-model="password[0]"
-                 ref="input0"
+          <input v-for="(input, index) in password"
+                 :key="`input_${index}`"
+                 type="text"
+                 class="input"
+                 ref="inputs"
                  min="0"
                  max="9"
                  maxlength="1"
                  pattern="[0-9]"
-                 @input="handleOnchange($event)" 
-                 @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
+                 :value="password[index]"
+                 @keypress="handleOnValidate($event)"
+                 @keyup="(event) => handleInput({event, index})"
                  @paste="handleOnPaste($event)"
                  >
-          <input class="input" 
-                 v-model="password[1]"
-                 ref="input1"
-                 min="0"
-                 max="9"
-                 maxlength="1"
-                 pattern="[0-9]"
-                 @input="handleOnchange($event)" 
-                 @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
-                 @paste="handleOnPaste($event)"
-                  >
-          <input class="input" 
-                 v-model="password[2]"
-                 ref="input2"
-                 min="0"
-                 max="9"
-                 maxlength="1"
-                 pattern="[0-9]"
-                 @input="handleOnchange($event)" 
-                 @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
-                 @paste="handleOnPaste($event)"
-                  >
-          <input class="input" 
-                 v-model="password[3]"
-                 ref="input3"
-                 min="0"
-                 max="9"
-                 maxlength="1"
-                 pattern="[0-9]"
-                 @input="handleOnchange($event)" 
-                 @keydown="handleOnValidate($event)"
-                 @keyup="handleInput($event)"
-                 @paste="handleOnPaste($event)"
-                  >
-          
         </div>
       </div>
       <span class="error__message">{{errorMessage}}</span>
