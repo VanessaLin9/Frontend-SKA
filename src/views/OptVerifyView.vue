@@ -7,26 +7,27 @@ import {RouterName} from "@/router";
 import {useUserStore} from "@/store/userStore";
 
 const isLoading = ref(false);
-const token = ref('');
 
 const router = useRouter();
-const { setUser }= useUserStore();
+const { setUser, setToken }= useUserStore();
 
 const handleLoading = () => {
   isLoading.value = !isLoading.value
 }
 
-const handleToken = (value: string) => {
-  token.value = value;
-  localStorage.setItem('token', token.value);
-  authorization()
+const handleToken = (token: string) => {
+  setToken({
+    value: token
+  });
+  localStorage.setItem('token', token);
+  authorization(token)
 }
 
-const authorization = async () => {
+const authorization = async (token: string) => {
   try {
     const response = await fetch('/api/auth', {
       headers: {
-        'Authorization': token.value
+        'Authorization': token
       }
     });
     const data = await response.json();
@@ -36,7 +37,6 @@ const authorization = async () => {
           quote: data.quote,
           photo: data.photo
     });
-      console.log('pina-login')
       await router.push({name: RouterName.Home});
     } else {
       throw new Error('Error: authorization failed');

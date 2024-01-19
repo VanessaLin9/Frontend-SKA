@@ -8,20 +8,21 @@ export const useUserStore = defineStore('User', ()=> {
         photo: ''
     });
 
+    const token = reactive({
+        value: ''
+    })
     const setUser = (u: {username: string, quote: string, photo: string}) => {
-        console.log('pina-setUser', u);
         user.username = u.username;
         user.quote = u.quote;
         user.photo = u.photo;
     }
     
-    const token = reactive({
-        value: ''
-    })
+    const setToken = (t: {value: string}) => token.value = t.value;
     
     return {
         user,
         token,
-        setUser
+        setUser,
+        setToken
     }
 })

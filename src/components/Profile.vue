@@ -4,11 +4,13 @@ import {storeToRefs} from "pinia";
 import {router, RouterName} from "@/router";
 
 const userStore = useUserStore();
-const { setUser }= userStore;
+const { setUser, setToken }= userStore;
 const { user, token }= storeToRefs(userStore);
 
 const handleLogout = async () => {
-  token.value = '';
+  setToken({
+    value: ''
+  });
   setUser({
     username: '',
     quote: '',
