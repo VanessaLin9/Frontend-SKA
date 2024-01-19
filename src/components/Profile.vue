@@ -1,31 +1,44 @@
 <script lang="ts" setup>
-const emit = defineEmits(['logout']);
-const props = defineProps({
-  username: String,
-  quote: String,
-  photo: String
-});
+import {useUserStore} from "@/store/userStore";
+import {storeToRefs} from "pinia";
+import {router, RouterName} from "@/router";
+
+const userStore = useUserStore();
+const { setUser }= userStore;
+const { user, token }= storeToRefs(userStore);
+
+const handleLogout = async () => {
+  token.value = '';
+  setUser({
+    username: '',
+    quote: '',
+    photo: ''
+  });
+  localStorage.removeItem('token');
+  await router.push({name: RouterName.Login});
+}
+
 </script>
 
 <template>
   <figure class="profile">
-    <img class="profile-photo" :src="props.photo" alt="" width="300" height="512">
+    <img class="profile-photo" :src="user.photo" alt="" width="300" height="512">
     <div class="profile-details">
       <blockquote>
         <p class="profile-quote font-medium">
-          {{props.quote}}
+          {{user.quote}}
         </p>
       </blockquote>
       <figcaption class="font-medium">
         <div class="text-sky-500">
-          {{props.username}}
+          {{user.username}}
         </div>
       </figcaption>
     </div>
   </figure>
   <div class="logoutBtn">
     <button
-      @click="emit('logout')"
+      @click="handleLogout"
     >logout</button>
   </div>
 </template>
@@ -84,7 +97,5 @@ const props = defineProps({
       color: #eee;
     }
   }
- 
 }
-
 </style>

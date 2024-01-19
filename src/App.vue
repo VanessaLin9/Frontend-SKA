@@ -1,24 +1,12 @@
 <script setup lang="ts">
-import OtpVerify from '@/components/OtpVerify.vue'
-import Profile from '@/components/Profile.vue'
-import Loading from '@/components/Loading.vue'
-import {computed, onMounted, reactive, ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
+import {useUserStore} from "@/store/userStore";
+import {storeToRefs} from "pinia";
 
-const isLoading = ref(false);
 const token = ref('');
-const user = reactive( {
-  username: '',
-  quote: '',
-  photo: ''
-});
-
-const handleLoading = () => {
-  isLoading.value = !isLoading.value
-}
-
-const handleShowProfile = computed(() => {
-  return !user.photo && !token.value
-})
+const userStore = useUserStore();
+const { setUser }= userStore;
+const { user }= storeToRefs(userStore);
 
 const authorization = async () => {
   try {
@@ -29,9 +17,7 @@ const authorization = async () => {
     });
     const data = await response.json();
     if(data){
-      user.username = data.username
-      user.quote = data.quote
-      user.photo = data.photo
+      setUser(data);
     } else {
       throw new Error('Error: authorization failed');
     }
@@ -46,14 +32,6 @@ const handleToken = (value: string) => {
   authorization()
 }
 
-const handleLogout = () => {
-  token.value = '';
-  user.username = '';
-  user.quote = '';
-  user.photo = '';
-  localStorage.removeItem('token');
-}
-
 onMounted(() => {
   const localToken = localStorage.getItem('token');
   if(localToken){
@@ -64,15 +42,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <Loading v-if="isLoading"/>
-  <Profile v-if="!handleShowProfile" 
-           :username ="user.username"
-           :quote="user.quote"
-           :photo="user.photo"
-           @logout="handleLogout"
-  />
-  <OtpVerify v-else
-  @post-loading="handleLoading()"
-  @finish-loading="handleLoading()"
-  @getToken="handleToken"/>
+  <router-view></router-view>
 </template>
